@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ShopAPI.Application.Repositories.ProductRepo;
+using ShopAPI.Application.RequestParameters;
+using ShopAPI.Application.Services;
 using ShopAPI.Application.VMs;
 using ShopAPI.Domain.Entities;
 
@@ -13,16 +15,36 @@ namespace ShopAPI.Web.Controllers
     {
         readonly IProductReadRepository _productReadRepository;
         readonly IProductWriteRepository _productWriteRepository;
-        public ProductsController(IProductReadRepository productReadRepository, IProductWriteRepository productWriteRepository)
+        readonly IWebHostEnvironment _webHostEnvironment;
+        readonly IFileService _fileService;
+
+        public ProductsController(IProductReadRepository productReadRepository, IProductWriteRepository productWriteRepository, IWebHostEnvironment webHostEnvironment, IFileService fileService)
         {
             _productReadRepository = productReadRepository;
             _productWriteRepository = productWriteRepository;
+            _webHostEnvironment = webHostEnvironment;
+            _fileService = fileService;
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> Get([FromQuery]Pagination pagination)
         {
-            return Ok(_productReadRepository.GetAll());
+           var total = _productReadRepository.GetAll().Count();
+           var products = _productReadRepository.GetAll().Skip(pagination.Page * pagination.Size).Take(pagination.Size).Select(selector => new
+            {
+                selector.Id,
+                selector.ProductName,
+                selector.ProductPrice,
+                selector.ProductStock,
+                selector.CreatedDate,
+                selector.UpdatedDate,
+            }).ToList();
+
+            return Ok(new
+            {
+                total,
+                products
+            });
         }
 
         [HttpGet("{id}")]
@@ -66,6 +88,16 @@ namespace ShopAPI.Web.Controllers
             await _productWriteRepository.DeleteAsync(id);
             await _productWriteRepository.SaveAsync();
             return Ok();
+        }
+
+
+        [HttpPost("[action]")]
+        public async Task<IActionResult> Upload()
+        {
+            string path = "images";
+            await _fileService.UploadAsync(Request.Form.Files, path);
+            return Ok();
+
         }
 
 

@@ -1,6 +1,7 @@
-using FluentValidation;
+    using FluentValidation;
 using FluentValidation.AspNetCore;
 using ShopAPI.Application.Validators.Product;
+using ShopAPI.Infrastructure;
 using ShopAPI.Infrastructure.Filters;
 using ShopAPI.Persistance;
 
@@ -23,6 +24,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddCors(opt => opt.AddDefaultPolicy(b => b.WithOrigins("http://localhost:4200", "https://localhost:4200").AllowAnyHeader().AllowAnyMethod()));
 
 builder.Services.AddPersistance();
+builder.Services.AddInfrastructureServices();
 
 var app = builder.Build();
 
@@ -38,6 +40,7 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
+app.UseStaticFiles();
 app.MapControllers();
 
 app.Run();

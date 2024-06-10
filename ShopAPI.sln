@@ -9,15 +9,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastru
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{A3646F71-518D-4463-9470-DED87DB81CBB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopAPI.Domain", "Core\ShopAPI.Domain\ShopAPI.Domain.csproj", "{1E73C0A1-BF13-4B93-8897-9926816DBDC4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShopAPI.Domain", "Core\ShopAPI.Domain\ShopAPI.Domain.csproj", "{1E73C0A1-BF13-4B93-8897-9926816DBDC4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopAPI.Application", "Core\ShopAPI.Application\ShopAPI.Application.csproj", "{7760C42E-B413-4227-BBFD-7C4D6BDC7DC9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShopAPI.Application", "Core\ShopAPI.Application\ShopAPI.Application.csproj", "{7760C42E-B413-4227-BBFD-7C4D6BDC7DC9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopAPI.Persistance", "Infrastructure\ShopAPI.Persistance\ShopAPI.Persistance.csproj", "{857C28E8-B27C-4823-8B30-090E0B616BAE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShopAPI.Persistance", "Infrastructure\ShopAPI.Persistance\ShopAPI.Persistance.csproj", "{857C28E8-B27C-4823-8B30-090E0B616BAE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopAPI.Infrastructure", "Infrastructure\ShopAPI.Infrastructure\ShopAPI.Infrastructure.csproj", "{6C6E6BF9-424F-4C75-BC9C-D12C51AC4B02}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShopAPI.Infrastructure", "Infrastructure\ShopAPI.Infrastructure\ShopAPI.Infrastructure.csproj", "{6C6E6BF9-424F-4C75-BC9C-D12C51AC4B02}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopAPI.Web", "Presentation\ShopAPI.Web\ShopAPI.Web.csproj", "{DD073AD3-F141-4DA6-8C7F-3ABD7FCA46F2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShopAPI.Web", "Presentation\ShopAPI.Web\ShopAPI.Web.csproj", "{DD073AD3-F141-4DA6-8C7F-3ABD7FCA46F2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
