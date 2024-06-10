@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ShopAPI.Application.Repositories.FileRepo;
+using ShopAPI.Application.Repositories.ProductImageRepo;
 using ShopAPI.Application.Repositories.ProductRepo;
 using ShopAPI.Application.RequestParameters;
 using ShopAPI.Application.Services;
@@ -18,12 +20,21 @@ namespace ShopAPI.Web.Controllers
         readonly IWebHostEnvironment _webHostEnvironment;
         readonly IFileService _fileService;
 
-        public ProductsController(IProductReadRepository productReadRepository, IProductWriteRepository productWriteRepository, IWebHostEnvironment webHostEnvironment, IFileService fileService)
+        readonly IFileWriteRepository _fileWriteRepository;
+        readonly IFileReadRepository _fileReadRepository;
+        readonly IProductImageReadRepository _productImageReadRepository;
+        readonly IProductImageWriteRepository _productImageWriteRepository;
+
+        public ProductsController(IProductReadRepository productReadRepository, IProductWriteRepository productWriteRepository, IWebHostEnvironment webHostEnvironment, IFileService fileService, IFileWriteRepository fileWriteRepository, IFileReadRepository fileReadRepository, IProductImageReadRepository productImageReadRepository, IProductImageWriteRepository productImageWriteRepository)
         {
             _productReadRepository = productReadRepository;
             _productWriteRepository = productWriteRepository;
             _webHostEnvironment = webHostEnvironment;
             _fileService = fileService;
+            _fileWriteRepository = fileWriteRepository;
+            _fileReadRepository = fileReadRepository;
+            _productImageReadRepository = productImageReadRepository;
+            _productImageWriteRepository = productImageWriteRepository;
         }
 
         [HttpGet]
@@ -95,7 +106,16 @@ namespace ShopAPI.Web.Controllers
         public async Task<IActionResult> Upload()
         {
             string path = "images";
-            await _fileService.UploadAsync(Request.Form.Files, path);
+            var datas = await _fileService.UploadAsync(Request.Form.Files, path);
+
+            await _productImageWriteRepository.AddRangeAsync(datas.Select(x => new ProductImageFile()
+            {
+                FileName = x.fileName,
+                Path = x.path
+            }).ToList());
+
+            await _productImageWriteRepository.SaveAsync();
+           
             return Ok();
 
         }

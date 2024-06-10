@@ -19,6 +19,9 @@ namespace ShopAPI.Persistance.Contexts
         DbSet<Product> Products { get; set; }
         DbSet<Order> Orders { get; set; }
         DbSet<Customer> Customers { get; set; }
+        DbSet<FileBase> FileBases { get; set; }
+        DbSet<ProductImageFile> ProductImageFiles { get; set; }
+        
 
 
         public async override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

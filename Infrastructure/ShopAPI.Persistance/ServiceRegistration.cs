@@ -1,11 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using ShopAPI.Application.Repositories.CustomerRepo;
+using ShopAPI.Application.Repositories.FileRepo;
 using ShopAPI.Application.Repositories.OrderRepo;
+using ShopAPI.Application.Repositories.ProductImageRepo;
 using ShopAPI.Application.Repositories.ProductRepo;
 using ShopAPI.Persistance.Contexts;
 using ShopAPI.Persistance.Repositories.CustomerRepo;
+using ShopAPI.Persistance.Repositories.FileRepo;
 using ShopAPI.Persistance.Repositories.OrdeRepo;
+using ShopAPI.Persistance.Repositories.ProductImageRepo;
 using ShopAPI.Persistance.Repositories.ProductRepo;
 using System;
 using System.Collections.Generic;
@@ -29,6 +33,12 @@ namespace ShopAPI.Persistance
 
             services.AddScoped<ICustomerReadRepository, CustomerReadRepository>();
             services.AddScoped<ICustomerWriteRepository, CustomerWriteRepository>();
+
+            services.AddScoped<IFileReadRepository, FileReadRepository>();
+            services.AddScoped<IFileWriteRepository, FileWriteRepository>();
+
+            services.AddScoped<IProductImageReadRepository, ProductImageReadRepository>();
+            services.AddScoped<IProductImageWriteRepository, ProductImageWriteRepository>();
 
         }
 

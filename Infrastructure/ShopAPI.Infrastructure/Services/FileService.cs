@@ -71,7 +71,7 @@ namespace ShopAPI.Infrastructure.Services
 
                 if (isCopied)
                 {
-                    uploadedFiles.Add((newName, filePath));
+                    uploadedFiles.Add((newName, path));
                 }
                 else
                 {
