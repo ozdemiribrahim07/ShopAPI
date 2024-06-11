@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ShopAPI.Application.Abstraction.Storage;
+using ShopAPI.Application.Abstraction.Storage.AWS;
 using ShopAPI.Application.Repositories.FileRepo;
 using ShopAPI.Application.Repositories.ProductImageRepo;
 using ShopAPI.Application.Repositories.ProductRepo;
 using ShopAPI.Application.RequestParameters;
-using ShopAPI.Application.Services;
 using ShopAPI.Application.VMs;
 using ShopAPI.Domain.Entities;
 
@@ -18,23 +19,27 @@ namespace ShopAPI.Web.Controllers
         readonly IProductReadRepository _productReadRepository;
         readonly IProductWriteRepository _productWriteRepository;
         readonly IWebHostEnvironment _webHostEnvironment;
-        readonly IFileService _fileService;
+
+        readonly IStorageService storageService;
+        readonly IAwsStorage _awsStorage;
+        
 
         readonly IFileWriteRepository _fileWriteRepository;
         readonly IFileReadRepository _fileReadRepository;
         readonly IProductImageReadRepository _productImageReadRepository;
         readonly IProductImageWriteRepository _productImageWriteRepository;
 
-        public ProductsController(IProductReadRepository productReadRepository, IProductWriteRepository productWriteRepository, IWebHostEnvironment webHostEnvironment, IFileService fileService, IFileWriteRepository fileWriteRepository, IFileReadRepository fileReadRepository, IProductImageReadRepository productImageReadRepository, IProductImageWriteRepository productImageWriteRepository)
+        public ProductsController(IProductReadRepository productReadRepository, IProductWriteRepository productWriteRepository, IWebHostEnvironment webHostEnvironment, IFileWriteRepository fileWriteRepository, IFileReadRepository fileReadRepository, IProductImageReadRepository productImageReadRepository, IProductImageWriteRepository productImageWriteRepository, IStorageService storageService, IAwsStorage awsStorage)
         {
             _productReadRepository = productReadRepository;
             _productWriteRepository = productWriteRepository;
             _webHostEnvironment = webHostEnvironment;
-            _fileService = fileService;
             _fileWriteRepository = fileWriteRepository;
             _fileReadRepository = fileReadRepository;
             _productImageReadRepository = productImageReadRepository;
             _productImageWriteRepository = productImageWriteRepository;
+            this.storageService = storageService;
+            _awsStorage = awsStorage;
         }
 
         [HttpGet]
@@ -105,20 +110,26 @@ namespace ShopAPI.Web.Controllers
         [HttpPost("[action]")]
         public async Task<IActionResult> Upload()
         {
-            string path = "images";
-            var datas = await _fileService.UploadAsync(Request.Form.Files, path);
+
+            string path = "images-deneme";
+            var datas  = await storageService.UploadAsync(path, Request.Form.Files);
+            
 
             await _productImageWriteRepository.AddRangeAsync(datas.Select(x => new ProductImageFile()
             {
                 FileName = x.fileName,
-                Path = x.path
+                Path = x.pathOrbucketName,
+                Storage = storageService.StorageName,
+
             }).ToList());
 
             await _productImageWriteRepository.SaveAsync();
-           
+
             return Ok();
 
         }
+
+
 
 
     }
