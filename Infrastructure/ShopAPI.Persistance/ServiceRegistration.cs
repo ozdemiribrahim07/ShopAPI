@@ -5,6 +5,7 @@ using ShopAPI.Application.Repositories.FileRepo;
 using ShopAPI.Application.Repositories.OrderRepo;
 using ShopAPI.Application.Repositories.ProductImageRepo;
 using ShopAPI.Application.Repositories.ProductRepo;
+using ShopAPI.Domain.Entities;
 using ShopAPI.Persistance.Contexts;
 using ShopAPI.Persistance.Repositories.CustomerRepo;
 using ShopAPI.Persistance.Repositories.FileRepo;
@@ -25,6 +26,16 @@ namespace ShopAPI.Persistance
         {
             services.AddDbContext<ShopContext>(opt => opt.UseNpgsql(Configuration.ConnectionString));
 
+            services.AddIdentity<AppUser, AppRole>(opt =>
+            {
+                opt.Password.RequiredLength = 6;
+                opt.Password.RequireNonAlphanumeric = false;
+                opt.Password.RequireDigit = false;
+                opt.Password.RequireLowercase = false;
+                opt.Password.RequireUppercase = false;
+                opt.User.RequireUniqueEmail = true;
+            }).AddEntityFrameworkStores<ShopContext>();
+                
             services.AddScoped<IProductReadRepository, ProductReadRepository>();
             services.AddScoped<IProductWriteRepository, ProductWriteRepository>();
 

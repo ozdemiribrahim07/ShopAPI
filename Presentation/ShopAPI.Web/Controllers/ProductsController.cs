@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -24,6 +25,7 @@ namespace ShopAPI.Web.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes ="Admin")]
     public class ProductsController : ControllerBase
     {
         readonly IProductReadRepository _productReadRepository;
@@ -105,7 +107,7 @@ namespace ShopAPI.Web.Controllers
         }
 
 
-
+    
         [HttpGet("[action]/{Id}")]
         public async Task<IActionResult> GetImages([FromRoute] GetProductImageQueryRequest getProductImageQuery)
         {

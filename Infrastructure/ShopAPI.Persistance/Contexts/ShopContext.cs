@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using ShopAPI.Domain.Entities;
 using ShopAPI.Domain.Entities.Common;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ShopAPI.Persistance.Contexts
 {
-    public class ShopContext : DbContext
+    public class ShopContext : IdentityDbContext<AppUser, AppRole, string>
     {
         public ShopContext(DbContextOptions options) : base(options)
         {

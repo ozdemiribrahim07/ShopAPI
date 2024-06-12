@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <Folder Include="Features\Products\Queries\GetProductImages\" />
+    <Folder Include="Features\Users\Queries\" />
     <Folder Include="Services\" />
   </ItemGroup>
 
