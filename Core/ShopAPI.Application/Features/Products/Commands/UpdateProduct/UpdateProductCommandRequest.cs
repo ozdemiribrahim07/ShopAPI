@@ -1,19 +1,17 @@
-﻿using ShopAPI.Domain.Entities.Common;
+﻿using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ShopAPI.Domain.Entities
+namespace ShopAPI.Application.Features.Products.Commands.UpdateProduct
 {
-    public class Product : BaseEntity
+    public class UpdateProductCommandRequest : IRequest<UpdateProductCommandResponse>
     {
+        public string Id { get; set; }
         public string ProductName { get; set; }
         public int ProductStock { get; set; }
         public float ProductPrice { get; set; }
-        public ICollection<ProductImageFile> ProductImageFiles { get; set; }
-        public ICollection<Order> Orders { get; set; }
-
     }
 }

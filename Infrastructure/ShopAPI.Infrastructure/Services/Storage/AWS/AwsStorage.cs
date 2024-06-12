@@ -141,8 +141,7 @@ namespace ShopAPI.Infrastructure.Services.Storage.Storage.AWS
 
                         if (response.HttpStatusCode == System.Net.HttpStatusCode.OK)
                         {
-
-                            uploadedFiles.Add((key, pathOrbucketName));
+                            uploadedFiles.Add((key, $"{pathOrbucketName}/{key}"));
                         }
                     }
                 }

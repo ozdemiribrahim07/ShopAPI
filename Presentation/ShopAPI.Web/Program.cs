@@ -6,6 +6,7 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
+using ShopAPI.Application;
 using ShopAPI.Application.Validators.Product;
 using ShopAPI.Infrastructure;
 using ShopAPI.Infrastructure.Filters;
@@ -35,6 +36,7 @@ builder.Services.AddDefaultAWSOptions(builder.Configuration.GetAWSOptions());
 builder.Services.AddAWSService<IAmazonS3>();
 builder.Services.AddPersistance();
 builder.Services.AddInfrastructureServices();
+builder.Services.AddApplicationServices();
 builder.Services.AddStorage<AwsStorage>();
 
 
