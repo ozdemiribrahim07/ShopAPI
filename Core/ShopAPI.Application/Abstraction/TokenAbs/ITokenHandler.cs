@@ -1,4 +1,5 @@
 ﻿using ShopAPI.Application.Dtos;
+using ShopAPI.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace ShopAPI.Application.Abstraction.TokenAbs
 {
     public interface ITokenHandler
     {
-        Token CreateAccessToken(int seconds);
+        Token CreateAccessToken(int seconds, AppUser appUser);
         string CreateRefreshToken();
     }
 }

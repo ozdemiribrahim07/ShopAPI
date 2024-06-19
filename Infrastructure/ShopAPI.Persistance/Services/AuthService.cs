@@ -49,7 +49,7 @@ namespace ShopAPI.Persistance.Services
             var result = await _signInManager.CheckPasswordSignInAsync(user, password, false);
             if (result.Succeeded)
             {
-                Token token = _tokenHandler.CreateAccessToken(minute);
+                Token token = _tokenHandler.CreateAccessToken(minute,user);
                 await _userService.UpdateRefreshToken(token.RefreshToken, token.Expiration, user, 10);
                 return token;
             }
@@ -65,7 +65,7 @@ namespace ShopAPI.Persistance.Services
 
             if (appUser != null && appUser?.RefreshTokenEndTime > DateTime.UtcNow)
             {
-                Token token = _tokenHandler.CreateAccessToken(20);
+                Token token = _tokenHandler.CreateAccessToken(30,appUser);
                 await _userService.UpdateRefreshToken(token.RefreshToken, token.Expiration, appUser, 10);
                 return token;
             }

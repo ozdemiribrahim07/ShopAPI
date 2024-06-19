@@ -2,10 +2,12 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using ShopAPI.Application.Abstraction.TokenAbs;
+using ShopAPI.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,7 +23,7 @@ namespace ShopAPI.Infrastructure.Services.Token
             _configuration = configuration;
         }
 
-        public Application.Dtos.Token CreateAccessToken(int seconds)
+        public Application.Dtos.Token CreateAccessToken(int seconds, AppUser appUser)
         {
            
             Application.Dtos.Token token = new();
@@ -30,14 +32,18 @@ namespace ShopAPI.Infrastructure.Services.Token
 
             SigningCredentials credentials = new(key, SecurityAlgorithms.HmacSha256);
 
-            token.Expiration = DateTime.Now.AddSeconds(seconds);
+            token.Expiration = DateTime.Now.AddMinutes(seconds);
 
             JwtSecurityToken securityToken = new(
                 issuer: _configuration["Token:Issuer"],
                 audience: _configuration["Token:Audience"],
                 expires: token.Expiration,
                 notBefore: DateTime.UtcNow,
-                signingCredentials: credentials
+                signingCredentials: credentials,
+                claims : new List<Claim>
+                {
+                    new(ClaimTypes.Name, appUser.UserName)
+                }
                 );
            
              JwtSecurityTokenHandler tokenHandler = new();

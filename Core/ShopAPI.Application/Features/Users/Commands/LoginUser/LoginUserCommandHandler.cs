@@ -27,7 +27,7 @@ namespace ShopAPI.Application.Features.Users.Commands.LoginUser
         public async Task<LoginUserCommandResponse> Handle(LoginUserCommandRequest request, CancellationToken cancellationToken)
         {
          
-            var token = await _authService.LoginAsync(request.EmailOrUsername,request.Password,20);
+            var token = await _authService.LoginAsync(request.EmailOrUsername,request.Password,50);
 
             return new LoginUserCommandResponse()
             {
