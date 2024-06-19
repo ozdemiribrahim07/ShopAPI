@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using ShopAPI.Application.Abstraction.Services;
 using ShopAPI.Application.Repositories.CustomerRepo;
 using ShopAPI.Application.Repositories.FileRepo;
 using ShopAPI.Application.Repositories.OrderRepo;
@@ -12,6 +13,7 @@ using ShopAPI.Persistance.Repositories.FileRepo;
 using ShopAPI.Persistance.Repositories.OrdeRepo;
 using ShopAPI.Persistance.Repositories.ProductImageRepo;
 using ShopAPI.Persistance.Repositories.ProductRepo;
+using ShopAPI.Persistance.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,6 +37,8 @@ namespace ShopAPI.Persistance
                 opt.Password.RequireUppercase = false;
                 opt.User.RequireUniqueEmail = true;
             }).AddEntityFrameworkStores<ShopContext>();
+
+          
                 
             services.AddScoped<IProductReadRepository, ProductReadRepository>();
             services.AddScoped<IProductWriteRepository, ProductWriteRepository>();
@@ -50,6 +54,9 @@ namespace ShopAPI.Persistance
 
             services.AddScoped<IProductImageReadRepository, ProductImageReadRepository>();
             services.AddScoped<IProductImageWriteRepository, ProductImageWriteRepository>();
+
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IAuthService, AuthService>();
 
         }
 

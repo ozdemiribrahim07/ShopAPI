@@ -5,13 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ShopAPI.Application.Features.Users.Commands.LoginUser
+namespace ShopAPI.Application.Features.Users.Commands.RefreshTokenLogin
 {
-    public class LoginUserCommandResponse
+    public class RefreshTokenLoginCommandResponse
     {
         public Token Token { get; set; }
-        public string Message { get; set; }
-       
-
     }
 }

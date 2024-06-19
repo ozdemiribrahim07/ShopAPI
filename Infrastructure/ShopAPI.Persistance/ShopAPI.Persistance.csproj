@@ -26,8 +26,4 @@
     <ProjectReference Include="..\..\Core\ShopAPI.Application\ShopAPI.Application.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Concrete\" />
-  </ItemGroup>
-
 </Project>

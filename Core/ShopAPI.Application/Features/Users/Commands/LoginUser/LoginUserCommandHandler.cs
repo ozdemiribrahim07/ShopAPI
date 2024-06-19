@@ -1,7 +1,9 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Identity;
+using ShopAPI.Application.Abstraction.Services;
 using ShopAPI.Application.Abstraction.TokenAbs;
 using ShopAPI.Application.Dtos;
+using ShopAPI.Application.Dtos.User;
 using ShopAPI.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -13,50 +15,24 @@ namespace ShopAPI.Application.Features.Users.Commands.LoginUser
 {
     public class LoginUserCommandHandler : IRequestHandler<LoginUserCommandRequest, LoginUserCommandResponse>
     {
-        readonly UserManager<AppUser> _userManager;
-        readonly SignInManager<AppUser> _signInManager;
-        readonly ITokenHandler _tokenHandler;
+        readonly IAuthService _authService;
+        readonly IUserService _userService;
 
-        public LoginUserCommandHandler(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, ITokenHandler tokenHandler)
+        public LoginUserCommandHandler(IAuthService authService, IUserService userService)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
-            _tokenHandler = tokenHandler;
+            _authService = authService;
+            _userService = userService;
         }
 
         public async Task<LoginUserCommandResponse> Handle(LoginUserCommandRequest request, CancellationToken cancellationToken)
         {
+         
+            var token = await _authService.LoginAsync(request.EmailOrUsername,request.Password,20);
 
-            AppUser user = await _userManager.FindByNameAsync(request.EmailOrUsername);
-
-            if (user == null)
+            return new LoginUserCommandResponse()
             {
-               await _userManager.FindByEmailAsync(request.EmailOrUsername);
-            }
-            if (user == null)
-            {
-                throw new Exception("Kullanıcı bulunamadı veya kullanıcı adı veya şifre hatalı !");
-            }
-
-
-            var result = await _signInManager.CheckPasswordSignInAsync(user, request.Password, false);
-            if (result.Succeeded)
-            {
-               Token token  = _tokenHandler.CreateAccessToken(5);
-
-                return new LoginUserCommandResponse()
-                {
-                    Token = token,
-                    Message = "Giriş yapıldı"
-                };
-            }
-            else
-            {
-                return new LoginUserCommandResponse()
-                {
-                    Message = "Giriş yapılamadı"
-                };
-            }
+                Token = token
+            };
         }
     }
 }

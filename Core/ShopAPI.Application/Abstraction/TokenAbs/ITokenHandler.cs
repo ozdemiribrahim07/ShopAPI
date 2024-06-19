@@ -9,6 +9,7 @@ namespace ShopAPI.Application.Abstraction.TokenAbs
 {
     public interface ITokenHandler
     {
-        Token CreateAccessToken(int minute);
+        Token CreateAccessToken(int seconds);
+        string CreateRefreshToken();
     }
 }

@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -20,7 +21,7 @@ namespace ShopAPI.Infrastructure.Services.Token
             _configuration = configuration;
         }
 
-        public Application.Dtos.Token CreateAccessToken(int minute)
+        public Application.Dtos.Token CreateAccessToken(int seconds)
         {
            
             Application.Dtos.Token token = new();
@@ -29,7 +30,7 @@ namespace ShopAPI.Infrastructure.Services.Token
 
             SigningCredentials credentials = new(key, SecurityAlgorithms.HmacSha256);
 
-            token.Expiration = DateTime.Now.AddMinutes(minute);
+            token.Expiration = DateTime.Now.AddSeconds(seconds);
 
             JwtSecurityToken securityToken = new(
                 issuer: _configuration["Token:Issuer"],
@@ -42,8 +43,22 @@ namespace ShopAPI.Infrastructure.Services.Token
              JwtSecurityTokenHandler tokenHandler = new();
              token.AccessToken = tokenHandler.WriteToken(securityToken);
 
+             
+            string refreshToken = CreateRefreshToken();
+            token.RefreshToken = refreshToken;
+
+
              return token;
 
+        }
+
+        public string CreateRefreshToken()
+        {
+            byte[] number = new byte[32];
+
+            using RandomNumberGenerator random = RandomNumberGenerator.Create();
+            random.GetBytes(number);
+            return Convert.ToBase64String(number);
         }
     }
 }
