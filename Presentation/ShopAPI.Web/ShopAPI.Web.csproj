@@ -27,6 +27,7 @@
     <ProjectReference Include="..\..\Core\ShopAPI.Application\ShopAPI.Application.csproj" />
     <ProjectReference Include="..\..\Infrastructure\ShopAPI.Infrastructure\ShopAPI.Infrastructure.csproj" />
     <ProjectReference Include="..\..\Infrastructure\ShopAPI.Persistance\ShopAPI.Persistance.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\ShopAPI.SignalR\ShopAPI.SignalR.csproj" />
   </ItemGroup>
 
   <ItemGroup>

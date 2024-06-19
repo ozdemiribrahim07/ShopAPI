@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using ShopAPI.Application.Abstraction.Hubs;
 using ShopAPI.Application.Repositories.ProductRepo;
 using System;
 using System.Collections.Generic;
@@ -11,10 +12,13 @@ namespace ShopAPI.Application.Features.Products.Commands.CreateProduct
     public class CreateProductCommandHandler : IRequestHandler<CreateProductCommandRequest, CreateProductCommandResponse>
     {
         readonly IProductWriteRepository _productWriteRepository;
+        readonly IProductHubService _productHubService;
 
-        public CreateProductCommandHandler(IProductWriteRepository productWriteRepository)
+
+        public CreateProductCommandHandler(IProductWriteRepository productWriteRepository, IProductHubService productHubService)
         {
             _productWriteRepository = productWriteRepository;
+            _productHubService = productHubService;
         }
 
         public async Task<CreateProductCommandResponse> Handle(CreateProductCommandRequest request, CancellationToken cancellationToken)
@@ -27,6 +31,9 @@ namespace ShopAPI.Application.Features.Products.Commands.CreateProduct
                     ProductPrice = request.ProductPrice
                 });
             await _productWriteRepository.SaveAsync();
+
+            await _productHubService.ProductAddedMessage("Product Added");
+
             return new();
         }
     }

@@ -22,10 +22,11 @@ using ShopAPI.Persistance;
 using ShopAPI.Web.AllConfigurations.ColumnWriters;
 using System.Security.Claims;
 using System.Text;
+using ShopAPI.SignalR;
+
+
 
 var builder = WebApplication.CreateBuilder(args);
-
-
 
 builder.Services.AddControllers(opt => opt.Filters.Add<ValidationFilter>())
     .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreateProductValidator>()).ConfigureApiBehaviorOptions(opt => opt.SuppressModelStateInvalidFilter = true);
@@ -33,7 +34,7 @@ builder.Services.AddControllers(opt => opt.Filters.Add<ValidationFilter>())
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddCors(opt => opt.AddDefaultPolicy(b => b.WithOrigins("http://localhost:4200", "https://localhost:4200").AllowAnyHeader().AllowAnyMethod()));
+builder.Services.AddCors(opt => opt.AddDefaultPolicy(b => b.WithOrigins("http://localhost:4200", "https://localhost:4200").AllowAnyHeader().AllowAnyMethod().AllowCredentials()));
 
 builder.Services.AddDefaultAWSOptions(builder.Configuration.GetAWSOptions());
 builder.Services.AddAWSService<IAmazonS3>();
@@ -41,6 +42,7 @@ builder.Services.AddPersistance();
 builder.Services.AddInfrastructureServices();
 builder.Services.AddApplicationServices();
 builder.Services.AddStorage<AwsStorage>();
+builder.Services.AddSignalRServices();
 
 Logger logger = new LoggerConfiguration()
     .WriteTo.File("logs/log.txt")
@@ -120,5 +122,7 @@ app.Use(async(context, next) =>
 
 app.UseStaticFiles();
 app.MapControllers();
+
+app.MapHub();
 
 app.Run();
